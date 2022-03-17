@@ -10,9 +10,11 @@ import React, { useState } from "react";
 import Colors from "../constants/Colors";
 import { useDispatch } from "react-redux";
 import { addPlace } from "../store/PlacesActions";
+import ImageSelector from "../components/ImageSelector";
 
 const NewPlaceScreen = (props) => {
   const [titleValue, setTitleValue] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
   const dispatch = useDispatch();
 
   const titleChangeHandler = (text) => {
@@ -20,8 +22,12 @@ const NewPlaceScreen = (props) => {
   };
 
   const savePlaceHandler = () => {
-    dispatch(addPlace(titleValue));
+    dispatch(addPlace(titleValue, selectedImage));
     props.navigation.goBack();
+  };
+
+  const imageTakenHandler = (imagePath) => {
+    setSelectedImage(imagePath);
   };
   return (
     <ScrollView>
@@ -32,6 +38,7 @@ const NewPlaceScreen = (props) => {
           onChangeText={titleChangeHandler}
           value={titleValue}
         />
+        <ImageSelector onImageTaken={imageTakenHandler} />
         <Button
           title="Save Place"
           color={Colors.primary}
