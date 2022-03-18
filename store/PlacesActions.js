@@ -19,15 +19,14 @@ export const addPlace = (title, selectedImage) => {
         15.6,
         12.3
       );
+      dispatch({
+        type: ADD_PLACE,
+        payload: { id: dbResult.insertId, title, selectedImage: newPath },
+      });
     } catch (error) {
       console.log(error);
       throw error;
     }
-
-    dispatch({
-      type: ADD_PLACE,
-      payload: { id: dbResult.insertId, title, selectedImage: newPath },
-    });
   };
 };
 
@@ -35,10 +34,13 @@ export const loadPlaces = () => {
   return async (dispatch) => {
     try {
       const dbResult = await fetchPlaces();
+      dispatch({
+        type: SET_PLACES,
+        places: dbResult ? dbResult.rows._array : [],
+      });
     } catch (error) {
       console.log(error);
       throw error;
     }
-    dispatch({ type: SET_PLACES, places: dbResult.rows._array });
   };
 };

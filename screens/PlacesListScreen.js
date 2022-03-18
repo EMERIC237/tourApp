@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HearderButton";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PlaceItem from "../components/PlaceItem";
 import * as PlacesActions from "../store/PlacesActions";
