@@ -17,7 +17,8 @@ const LocationPicker = (props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [pickedLocation, setPickedLocation] = useState();
 
-  const thePickedLocation = props.navigation.getParam("pickedLocation ");
+  const thePickedLocation = props.navigation.getParam("pickedLocation");
+  console.log({ thePickedLocation });
   const { onLocationPicked } = props;
   useEffect(() => {
     if (thePickedLocation) {
@@ -70,6 +71,7 @@ const LocationPicker = (props) => {
   const pickOnMapHandler = () => {
     props.navigation.navigate("Map");
   };
+  console.log(pickedLocation);
 
   return (
     <View style={styles.locationPicker}>

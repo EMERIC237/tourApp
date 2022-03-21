@@ -28,11 +28,8 @@ const MapScreen = (props) => {
       // could show an alert!
       return;
     }
+    console.log({ selectedLocation });
     props.navigation.navigate("NewPlace", { pickedLocation: selectedLocation });
-
-    function newFunction() {
-      console.log({ selectedLocation });
-    }
   }, [selectedLocation]);
   useEffect(() => {
     props.navigation.setParams({ saveLocation: savePickedLocationHandler });
