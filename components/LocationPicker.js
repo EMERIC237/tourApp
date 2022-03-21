@@ -18,7 +18,6 @@ const LocationPicker = (props) => {
   const [pickedLocation, setPickedLocation] = useState();
 
   const thePickedLocation = props.navigation.getParam("pickedLocation");
-  console.log({ thePickedLocation });
   const { onLocationPicked } = props;
   useEffect(() => {
     if (thePickedLocation) {
@@ -71,8 +70,6 @@ const LocationPicker = (props) => {
   const pickOnMapHandler = () => {
     props.navigation.navigate("Map");
   };
-  console.log(pickedLocation);
-
   return (
     <View style={styles.locationPicker}>
       <MapPreview
