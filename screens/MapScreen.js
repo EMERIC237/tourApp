@@ -1,6 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
+import Colors from "../constants/Colors";
 import MapView, { Marker } from "react-native-maps";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
@@ -10,12 +17,27 @@ const MapScreen = (props) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
-  const selectLoccationHandler = (event) => {
+  const selectLocationHandler = (event) => {
     setSelectedLocation({
       lat: event.nativeEvent.coordinate.latitude,
       lng: event.nativeEvent.coordinate.longitude,
     });
   };
+  const savePickedLocationHandler = useCallback(() => {
+    if (!selectedLocation) {
+      // could show an alert!
+      return;
+    }
+    props.navigation.navigate("NewPlace", { pickedLocation: selectedLocation });
+
+    function newFunction() {
+      console.log({ selectedLocation });
+    }
+  }, [selectedLocation]);
+  useEffect(() => {
+    props.navigation.setParams({ saveLocation: savePickedLocationHandler });
+  }, [savePickedLocationHandler]);
+
   let markerCoordinates;
   if (selectedLocation) {
     markerCoordinates = {
@@ -27,7 +49,7 @@ const MapScreen = (props) => {
     <MapView
       region={mapRegion}
       style={styles.map}
-      onPress={selectLoccationHandler}
+      onPress={selectLocationHandler}
     >
       {markerCoordinates && (
         <Marker title="Picked Location" coordinate={markerCoordinates}></Marker>
@@ -36,10 +58,27 @@ const MapScreen = (props) => {
   );
 };
 
+MapScreen.navigationOptions = (navData) => {
+  const saveFn = navData.navigation.getParam("saveLocation");
+  return {
+    headerRight: () => (
+      <TouchableOpacity style={styles.headerButton} onPress={saveFn}>
+        <Text style={styles.headerButtonText}>Save</Text>
+      </TouchableOpacity>
+    ),
+  };
+};
 export default MapScreen;
 
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+  },
+  headerButton: {
+    marginHorizontal: 20,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: Platform.OS === "android" ? "white" : Colors.primary,
   },
 });
